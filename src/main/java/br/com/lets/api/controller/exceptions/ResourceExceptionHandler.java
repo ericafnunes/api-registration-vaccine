@@ -3,6 +3,7 @@ package br.com.lets.api.controller.exceptions;
 
 import br.com.lets.api.services.exceptions.DadosMessageException;
 import br.com.lets.api.services.exceptions.ObjectNotFoundException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
+@Log4j2
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
@@ -21,6 +23,7 @@ public class ResourceExceptionHandler {
     }
     @ExceptionHandler(DadosMessageException.class)
     public ResponseEntity<DtoErro> dadosException(DadosMessageException elem, HttpServletRequest request){
+        log.error("Erro de usuario");
         DtoErro erro = new DtoErro(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), elem.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
